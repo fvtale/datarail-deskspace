@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  Source: github.com/fvtale/datarail-deskspace (site/index.html).
+  Published into datarail-site/public/DeskSpace by CI. Anything edited in
+  datarail-site directly is overwritten on the next publish.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DeskSpace — your desk on datarail.org</title>
+<meta name="description" content="A desk nobody is monetizing. Pin notes to a bulletin board, collect knick-knacks by wandering datarail.org, and plug the computer into your datarail storage. It all lives in your browser.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#05070b">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DeskSpace on datarail.org">
+<meta property="og:description" content="A desk nobody is monetizing. Notes, knick-knacks, and a computer that plugs into your storage.">
+<meta property="og:url" content="https://datarail.org/DeskSpace/">
+<!-- Where the computer finds storage. tools/build.mjs can point it elsewhere. -->
+<meta name="deskspace:storage" content="https://storage.datarail.org">
+<link rel="stylesheet" href="/assets/circuit.css">
+<link rel="stylesheet" href="css/deskspace.css">
+<!-- @catalog -->
+<script src="beacon.js" data-objective="deskspace.arrive" defer></script>
+<script type="module" src="js/main.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#room">Skip to the desk</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/">
+      <span class="brand-dot" aria-hidden="true"></span>
+      <span class="brand-text">DataRail <b>DeskSpace</b></span>
+    </a>
+    <nav class="header-nav" aria-label="datarail.org">
+      <a href="/library/">Library</a>
+      <a href="https://storage.datarail.org/">Storage</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="intro shell">
+    <p class="label">datarail.org / DeskSpace</p>
+    <h1>A desk nobody is <span class="glitch" data-text="monetizing">monetizing</span>.</h1>
+    <p class="lede">Pin notes to the board. Pick up junk by wandering around datarail.org. Plug the computer into your storage.
+      It all lives in this browser: no account to make, no analytics, no growth team watching you move a mug.</p>
+    <ul class="status" id="status" aria-label="Desk status"></ul>
+  </section>
+
+  <div class="shell">
+    <section class="room" id="room" aria-label="Your desk" data-finish="laminate" data-glow="rail" data-phosphor="green" data-weather="rain">
+      <div class="scene">
+        <div class="wall-left">
+          <div class="bracket" id="wall-slot" aria-label="Wall bracket"></div>
+          <div class="window" id="window" aria-hidden="true">
+            <div class="skyline" id="skyline"></div>
+            <div class="weather" id="weather"></div>
+            <div class="glass"></div>
+          </div>
+        </div>
+
+        <div class="board" id="board">
+          <div class="board-bar">
+            <h2 class="label">Bulletin board</h2>
+            <span class="board-count" id="board-count"></span>
+            <button class="btn btn-pin" id="add-note" type="button">+ Pin a note</button>
+          </div>
+          <div class="cork" id="cork" role="group" aria-label="Pinned to the board" aria-describedby="move-hint"></div>
+        </div>
+
+        <div class="monitor" id="monitor">
+          <div class="bezel">
+            <div class="screen">
+              <div class="win">
+                <div class="win-bar">
+                  <span class="win-title">railterm <span class="win-sep">//</span> <span id="term-link">unplugged</span></span>
+                  <button class="win-btn" id="term-max" type="button" aria-pressed="false" aria-label="Maximize the computer">[&nbsp;&nbsp;]</button>
+                </div>
+                <div class="term" id="term">
+                  <div class="term-out" id="term-out" role="log" aria-live="polite" aria-label="Computer output"></div>
+                  <form class="term-in" id="term-form" autocomplete="off">
+                    <label class="prompt" for="term-input" id="term-prompt">you@desk:~$</label>
+                    <input id="term-input" name="command" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" enterkeyhint="send" aria-describedby="term-help">
+                  </form>
+                </div>
+              </div>
+              <div class="scanlines" aria-hidden="true"></div>
+            </div>
+            <div class="chin">
+              <span class="plate" aria-hidden="true">NO&nbsp;BRAND</span>
+              <div class="quick" id="term-quick">
+                <button type="button" data-cmd="connect">connect</button>
+                <button type="button" data-cmd="ls">ls</button>
+                <button type="button" data-cmd="help">help</button>
+                <a href="https://storage.datarail.org/" target="_blank" rel="noopener" id="term-console">console&nbsp;&#8599;</a>
+              </div>
+              <span class="led" id="term-led" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="stand" aria-hidden="true"><span class="neck"></span><span class="foot"></span></div>
+        </div>
+        <div class="surface" aria-hidden="true"><span class="lamp-light"></span></div>
+        <div class="items" id="items" role="group" aria-label="On the desk" aria-describedby="move-hint"></div>
+      </div>
+
+      <div class="desk-front">
+        <button class="drawer-handle" id="drawer-handle" type="button" aria-expanded="true" aria-controls="drawer">
+          <span class="handle-grip" aria-hidden="true"></span><span>Drawer</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="drawer" id="drawer" aria-label="Drawer">
+      <div class="tabs" role="tablist" aria-label="Drawer">
+        <button role="tab" type="button" id="tab-stash" aria-controls="panel-stash" data-tab="stash">Stash <span class="tab-n" id="stash-n"></span></button>
+        <button role="tab" type="button" id="tab-jobs" aria-controls="panel-jobs" data-tab="jobs">Odd jobs <span class="tab-n" id="jobs-n"></span></button>
+        <button role="tab" type="button" id="tab-desk" aria-controls="panel-desk" data-tab="desk">Desk</button>
+      </div>
+
+      <div class="panel" id="panel-stash" role="tabpanel" aria-labelledby="tab-stash">
+        <p class="panel-note">Everything you can earn. Do something around datarail.org and it lands on your desk. Put it away, get it back out, move it around. Nobody grades this.</p>
+        <ul class="stash" id="stash"></ul>
+      </div>
+
+      <div class="panel" id="panel-jobs" role="tabpanel" aria-labelledby="tab-jobs" hidden>
+        <p class="panel-note">It runs on the honor system. Pages report to this browser and nowhere else, so if you'd rather cheat from the console, go ahead. It's your desk.</p>
+        <ol class="jobs" id="jobs"></ol>
+      </div>
+
+      <div class="panel" id="panel-desk" role="tabpanel" aria-labelledby="tab-desk" hidden>
+        <form class="settings" id="settings">
+          <fieldset>
+            <legend>Desk top</legend>
+            <label class="chip-opt"><input type="radio" name="finish" value="laminate"><span>Scorched laminate</span></label>
+            <label class="chip-opt"><input type="radio" name="finish" value="steel"><span>Brushed steel</span></label>
+            <label class="chip-opt"><input type="radio" name="finish" value="wood"><span>Salvaged wood</span></label>
+          </fieldset>
+          <fieldset>
+            <legend>Underglow</legend>
+            <label class="swatch-opt" style="--sw: conic-gradient(var(--circuit-cyan), var(--circuit-pink), var(--circuit-yellow), var(--circuit-lavender), var(--circuit-cyan))"><input type="radio" name="glow" value="rail"><span>Follow the rails</span></label>
+            <label class="swatch-opt" style="--sw: var(--circuit-cyan)"><input type="radio" name="glow" value="cyan"><span>Cyan</span></label>
+            <label class="swatch-opt" style="--sw: var(--circuit-green)"><input type="radio" name="glow" value="green"><span>Green</span></label>
+            <label class="swatch-opt" style="--sw: var(--circuit-pink)"><input type="radio" name="glow" value="pink"><span>Pink</span></label>
+            <label class="swatch-opt" style="--sw: var(--circuit-lavender)"><input type="radio" name="glow" value="lavender"><span>Lavender</span></label>
+            <label class="swatch-opt" style="--sw: var(--circuit-yellow)"><input type="radio" name="glow" value="yellow"><span>Acid</span></label>
+            <label class="swatch-opt" style="--sw: var(--circuit-cherry)"><input type="radio" name="glow" value="cherry"><span>Cherry</span></label>
+          </fieldset>
+          <fieldset>
+            <legend>Screen phosphor</legend>
+            <label class="chip-opt"><input type="radio" name="phosphor" value="green"><span>Green</span></label>
+            <label class="chip-opt"><input type="radio" name="phosphor" value="amber"><span>Amber</span></label>
+            <label class="chip-opt"><input type="radio" name="phosphor" value="cyan"><span>Cyan</span></label>
+          </fieldset>
+          <fieldset>
+            <legend>Out the window</legend>
+            <label class="chip-opt"><input type="radio" name="weather" value="rain"><span>Rain</span></label>
+            <label class="chip-opt"><input type="radio" name="weather" value="clear"><span>Clear night</span></label>
+            <label class="chip-opt"><input type="radio" name="weather" value="snow"><span>Snow</span></label>
+          </fieldset>
+        </form>
+
+        <div class="ownership">
+          <h3 class="label">Your desk is a file</h3>
+          <p class="panel-note">Everything here sits in this browser's storage. Export it to keep a copy or move it to another browser. Clearing site data clears the desk.</p>
+          <div class="own-actions">
+            <button class="btn" type="button" id="export-desk">Export desk</button>
+            <button class="btn" type="button" id="import-desk">Import desk</button>
+            <input type="file" id="import-file" accept="application/json,.json" hidden>
+            <button class="btn btn-quiet" type="button" id="clear-board">Clear the board</button>
+            <button class="btn btn-danger" type="button" id="forget-all">Forget everything</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-inner">
+    <span>DeskSpace is part of <a href="/">datarail.org</a>, a NYC studio building in public.</span>
+    <span class="label">no cookies · no tracking · no KPIs</span>
+  </div>
+</footer>
+
+<p class="sr-only" id="move-hint">Drag to move. With the keyboard, arrow keys move, Enter uses it, Delete puts it away.</p>
+<p class="sr-only" id="term-help">Type help for the list of commands.</p>
+
+<dialog class="note-dialog" id="note-dialog" aria-labelledby="note-dialog-title">
+  <form method="dialog" id="note-form">
+    <h2 class="label" id="note-dialog-title">Pin a note</h2>
+    <label class="sr-only" for="note-text">Note</label>
+    <textarea id="note-text" name="text" maxlength="280" rows="5" required placeholder="half an idea, a phone number, a grudge…"></textarea>
+    <p class="note-left"><span id="note-left">280</span> characters left</p>
+    <fieldset class="note-kinds">
+      <legend>Paper</legend>
+      <label class="chip-opt"><input type="radio" name="kind" value="sticky" checked><span>Sticky</span></label>
+      <label class="chip-opt"><input type="radio" name="kind" value="receipt"><span>Receipt</span></label>
+      <label class="chip-opt"><input type="radio" name="kind" value="card"><span>Index card</span></label>
+    </fieldset>
+    <fieldset class="note-colors" id="note-colors">
+      <legend>Color</legend>
+      <label class="swatch-opt" style="--sw: var(--paper-acid)"><input type="radio" name="color" value="acid" checked><span>Acid</span></label>
+      <label class="swatch-opt" style="--sw: var(--paper-pink)"><input type="radio" name="color" value="pink"><span>Pink</span></label>
+      <label class="swatch-opt" style="--sw: var(--paper-cyan)"><input type="radio" name="color" value="cyan"><span>Cyan</span></label>
+      <label class="swatch-opt" style="--sw: var(--paper-orange)"><input type="radio" name="color" value="orange"><span>Orange</span></label>
+      <label class="swatch-opt" style="--sw: var(--paper-lilac)"><input type="radio" name="color" value="lilac"><span>Lilac</span></label>
+    </fieldset>
+    <div class="dialog-actions">
+      <button class="btn btn-danger" value="unpin" id="note-unpin" formnovalidate>Unpin</button>
+      <span class="spacer"></span>
+      <button class="btn btn-quiet" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn btn-primary" value="save" id="note-save">Pin it</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<noscript><p class="noscript shell">DeskSpace needs JavaScript to draw the desk. Nothing it runs leaves your browser.</p></noscript>
+
+<script src="/assets/circuit.js" defer></script>
+</body>
+</html>

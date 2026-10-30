@@ -1,0 +1,249 @@
+{
+  "objectives": [
+    {
+      "id": "deskspace.arrive",
+      "title": "Show up",
+      "hint": "Open DeskSpace.",
+      "source": "desk",
+      "where": null
+    },
+    {
+      "id": "deskspace.pin",
+      "title": "Write it down",
+      "hint": "Pin a note to the board.",
+      "source": "desk",
+      "where": null
+    },
+    {
+      "id": "deskspace.pin-five",
+      "title": "Paper the wall",
+      "hint": "Have five notes up at once.",
+      "source": "desk",
+      "where": null
+    },
+    {
+      "id": "deskspace.return",
+      "title": "Come back",
+      "hint": "Open DeskSpace on a second day.",
+      "source": "desk",
+      "where": null
+    },
+    {
+      "id": "deskspace.regular",
+      "title": "Become furniture",
+      "hint": "Open DeskSpace on five different days.",
+      "source": "desk",
+      "where": null
+    },
+    {
+      "id": "deskspace.late",
+      "title": "Keep city hours",
+      "hint": "Sit at the desk between midnight and 4 a.m.",
+      "source": "desk",
+      "where": null
+    },
+    {
+      "id": "deskspace.export",
+      "title": "Take it with you",
+      "hint": "Export your desk to a file.",
+      "source": "desk",
+      "where": null
+    },
+    {
+      "id": "storage.connect",
+      "title": "Jack in",
+      "hint": "Connect the computer to your datarail storage.",
+      "source": "storage",
+      "where": null
+    },
+    {
+      "id": "storage.read",
+      "title": "Read the mail",
+      "hint": "Open a text file from storage on the computer.",
+      "source": "storage",
+      "where": null
+    },
+    {
+      "id": "terminal.sudo",
+      "title": "Ask nicely",
+      "hint": "The computer has opinions about authority.",
+      "source": "terminal",
+      "where": null,
+      "secret": true
+    },
+    {
+      "id": "library.visit",
+      "title": "Check the stacks",
+      "hint": "Browse the Library.",
+      "source": "beacon",
+      "where": "/library/",
+      "live": false
+    },
+    {
+      "id": "movies.visit",
+      "title": "Catch a screening",
+      "hint": "Read a review on Movies.",
+      "source": "beacon",
+      "where": "/movies/",
+      "live": false
+    },
+    {
+      "id": "events.visit",
+      "title": "Go outside",
+      "hint": "See what's on at Events.",
+      "source": "beacon",
+      "where": "/events/",
+      "live": false
+    },
+    {
+      "id": "ghostsignal.visit",
+      "title": "Pick up the signal",
+      "hint": "Find GhostSignal.",
+      "source": "beacon",
+      "where": "/ghostsignal/",
+      "live": false
+    }
+  ],
+  "items": [
+    {
+      "id": "lamp",
+      "name": "Gooseneck lamp",
+      "blurb": "Bends wherever you point it. Click it to turn it on.",
+      "objective": "deskspace.arrive",
+      "place": "desk",
+      "at": { "x": 0.9, "y": 0.42 },
+      "w": 92,
+      "tone": "yellow"
+    },
+    {
+      "id": "mug",
+      "name": "Mug, permanently stained",
+      "blurb": "Has held coffee, tea, pens and one bad idea.",
+      "objective": "deskspace.pin",
+      "place": "desk",
+      "at": { "x": 0.6, "y": 0.78 },
+      "w": 50,
+      "tone": "pink"
+    },
+    {
+      "id": "sticker",
+      "name": "Sticker: NO KPIs",
+      "blurb": "Five notes up and not one of them is a metric.",
+      "objective": "deskspace.pin-five",
+      "place": "desk",
+      "at": { "x": 0.72, "y": 0.92 },
+      "w": 70,
+      "tone": "yellow"
+    },
+    {
+      "id": "plant",
+      "name": "Pothos that won't die",
+      "blurb": "Watered twice. Thriving anyway.",
+      "objective": "deskspace.return",
+      "place": "desk",
+      "at": { "x": 0.97, "y": 0.2 },
+      "w": 74,
+      "tone": "green"
+    },
+    {
+      "id": "cat",
+      "name": "Waving cat, off-brand",
+      "blurb": "Waves at everyone. Doesn't care what your title is.",
+      "objective": "deskspace.regular",
+      "place": "desk",
+      "at": { "x": 0.78, "y": 0.3 },
+      "w": 58,
+      "tone": "cherry"
+    },
+    {
+      "id": "cassette",
+      "name": "Mixtape: NYC 3AM",
+      "blurb": "Side A is subway brakes. Side B is a bodega cat.",
+      "objective": "deskspace.late",
+      "place": "desk",
+      "at": { "x": 0.5, "y": 0.92 },
+      "w": 72,
+      "tone": "lavender"
+    },
+    {
+      "id": "neon",
+      "name": "Neon: NOT FOR SALE",
+      "blurb": "You exported your desk. Your data left with you, which is where it belongs.",
+      "objective": "deskspace.export",
+      "place": "wall",
+      "at": { "x": 0.5, "y": 0.5 },
+      "w": 210,
+      "tone": "pink"
+    },
+    {
+      "id": "drive",
+      "name": "Shucked hard drive",
+      "blurb": "Pulled out of its enclosure. Spins up while the computer is linked.",
+      "objective": "storage.connect",
+      "place": "desk",
+      "at": { "x": 0.6, "y": 0.4 },
+      "w": 64,
+      "tone": "cyan"
+    },
+    {
+      "id": "floppy",
+      "name": "Floppy, unlabeled",
+      "blurb": "1.44 MB of something. Nobody remembers what.",
+      "objective": "storage.read",
+      "place": "desk",
+      "at": { "x": 0.68, "y": 0.62 },
+      "w": 48,
+      "tone": "ash"
+    },
+    {
+      "id": "duck",
+      "name": "Rubber debugging duck",
+      "blurb": "Permission denied. Have a duck.",
+      "objective": "terminal.sudo",
+      "place": "desk",
+      "at": { "x": 0.86, "y": 0.86 },
+      "w": 52,
+      "tone": "yellow"
+    },
+    {
+      "id": "library-card",
+      "name": "Library card, overdue",
+      "blurb": "Borrowed everything. Returned nothing.",
+      "objective": "library.visit",
+      "place": "board",
+      "at": { "x": 0.88, "y": 0.2 },
+      "w": 112,
+      "tone": "cyan"
+    },
+    {
+      "id": "ticket",
+      "name": "Ticket stub, admit one",
+      "blurb": "Kept it. Obviously.",
+      "objective": "movies.visit",
+      "place": "board",
+      "at": { "x": 0.86, "y": 0.78 },
+      "w": 112,
+      "tone": "cherry"
+    },
+    {
+      "id": "transit",
+      "name": "Transit card, $0.25 left",
+      "blurb": "Not enough for a ride. Too sentimental to throw out.",
+      "objective": "events.visit",
+      "place": "board",
+      "at": { "x": 0.1, "y": 0.84 },
+      "w": 108,
+      "tone": "yellow"
+    },
+    {
+      "id": "scanner",
+      "name": "Scanner, antenna bent",
+      "blurb": "Picks something up on every channel. Mostly ghosts.",
+      "objective": "ghostsignal.visit",
+      "place": "desk",
+      "at": { "x": 0.7, "y": 0.18 },
+      "w": 52,
+      "tone": "lavender"
+    }
+  ]
+}

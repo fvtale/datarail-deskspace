@@ -1,0 +1,39 @@
+name: CI
+
+# Pull requests only. A push to main goes straight to Publish, which runs the
+# same check as its first job and will not ship a site that fails it -- running
+# CI here as well would only do the work twice.
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      # No install step: the check has no dependencies, on purpose. Anything
+      # this site needs, it ships.
+      - name: Check the catalog and the page
+        run: node tools/check.mjs
+
+      - name: Syntax-check every script
+        run: for f in tools/*.mjs site/js/*.js site/beacon.js; do node --check "$f"; done
+
+      # The build is where the data meets the template, so a build that cannot
+      # finish is a failure even though nothing is published from here.
+      - name: Build
+        run: node tools/build.mjs

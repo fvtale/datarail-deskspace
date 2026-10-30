@@ -1,0 +1,107 @@
+name: Publish to datarail.org
+
+# Builds the page and copies dist/ into datarail-site/public/DeskSpace, whose own
+# deploy workflow ships it to IONOS on push. So a merge here becomes a live page
+# two workflows later, with no step anyone has to remember. This repository
+# never touches the web server or its credentials.
+#
+# Off until the repository variable PUBLISH_TO_SITE is set to true and the
+# DATARAIL_SITE_DEPLOY_KEY secret holds the private half of a write deploy key
+# on fvtale/datarail-site -- the same shape Movies, the Library, Madley and the email
+# receptionist use. Until then every push still checks and builds, so a broken
+# catalog shows up red before it could ship.
+#
+# A deploy key rather than a token, for two reasons. It is scoped to one
+# repository by construction and never expires, so this cannot go quietly stale
+# months from now while it keeps building green. And a push made with it
+# triggers datarail-site's deploy, which a push made with GITHUB_TOKEN would not.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'data/**'
+      - 'tools/**'
+      - '.github/workflows/publish.yml'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Build and copy, but do not commit to the site'
+        type: boolean
+        default: true
+
+concurrency:
+  group: deskspace-publish
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out DeskSpace
+        uses: actions/checkout@v5
+        with:
+          path: deskspace
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Check the data and the page
+        working-directory: deskspace
+        run: node tools/check.mjs
+
+      - name: Build
+        working-directory: deskspace
+        run: node tools/build.mjs
+
+      - name: Publishing is switched off
+        if: vars.PUBLISH_TO_SITE != 'true'
+        run: echo "::notice title=Built, not published::Set the PUBLISH_TO_SITE variable to true and add the DATARAIL_SITE_DEPLOY_KEY secret to copy this into datarail-site."
+
+      - name: Check out the site
+        if: vars.PUBLISH_TO_SITE == 'true'
+        uses: actions/checkout@v5
+        with:
+          repository: fvtale/datarail-site
+          ssh-key: ${{ secrets.DATARAIL_SITE_DEPLOY_KEY }}
+          path: site
+
+      # --delete so a file removed here is removed there. It still will not
+      # disappear from the webspace on its own: the IONOS deploy runs with
+      # delete off and only ever adds or overwrites. Taking a file off the live
+      # server is a manual step in the IONOS file manager, by design.
+      - name: Copy the build into place
+        if: vars.PUBLISH_TO_SITE == 'true'
+        run: rsync -a --delete deskspace/dist/ site/public/DeskSpace/
+
+      - name: Commit to the site
+        if: vars.PUBLISH_TO_SITE == 'true' && (github.event_name == 'push' || inputs.dry_run == false)
+        working-directory: site
+        run: |
+          # status, not diff: the first publish creates public/DeskSpace/ from
+          # nothing, and diff cannot see untracked files -- it would report the
+          # site as already matching and ship nothing, forever.
+          if [ -z "$(git status --porcelain -- public/DeskSpace)" ]; then
+            echo "site already matches, nothing to push"
+            exit 0
+          fi
+          git config user.name  "datarail-deskspace"
+          git config user.email "contact@datarail.org"
+          git add public/DeskSpace
+          git commit -m "Update DeskSpace (datarail-deskspace@${GITHUB_SHA::12})"
+          # Movies, the Library, Madley, the events feed, Glyph and the receptionist all
+          # push to this repository too. Rebase rather than force.
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Say what a dry run would have done
+        if: vars.PUBLISH_TO_SITE == 'true' && github.event_name == 'workflow_dispatch' && inputs.dry_run
+        working-directory: site
+        run: |
+          echo "Dry run. These files would change under public/DeskSpace:"
+          git status --porcelain -- public/DeskSpace || echo "(none)"

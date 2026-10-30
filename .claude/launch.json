@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "deskspace",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/serve.mjs", "5296"],
+      "port": 5296,
+      "url": "http://localhost:5296"
+    }
+  ]
+}

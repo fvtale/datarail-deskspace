@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+node_modules/
+*.log
+
+# Rendered by tools/build.mjs. Nothing in it is written by hand, and CI builds
+# it fresh on every publish.
+dist/
