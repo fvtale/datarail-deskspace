@@ -95,9 +95,18 @@ jobs:
           git add public/DeskSpace
           git commit -m "Update DeskSpace (datarail-deskspace@${GITHUB_SHA::12})"
           # Movies, the Library, Madley, the events feed, Glyph and the receptionist all
-          # push to this repository too. Rebase rather than force.
-          git pull --rebase origin main
-          git push origin HEAD:main
+          # push to this repository too. Rebase rather than force. Two of them can
+          # publish in the same minute, and the one that pushes second is rejected
+          # (it happened on 2026-10-30, against the Library), so rebase and try
+          # again a few times before giving up. Each repository owns its own folder,
+          # so the rebase never conflicts.
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            echo "push rejected, attempt $attempt; rebasing again"
+            sleep $((attempt * 5))
+          done
+          exit 1
 
       - name: Say what a dry run would have done
         if: vars.PUBLISH_TO_SITE == 'true' && github.event_name == 'workflow_dispatch' && inputs.dry_run
