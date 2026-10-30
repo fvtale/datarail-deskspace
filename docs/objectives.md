@@ -65,7 +65,7 @@ desk has a knick-knack for it.
 
 | Objective | Page | Live |
 | --- | --- | --- |
-| `library.visit` | /library/ | not yet |
+| `library.visit` | /library/ | yes, since fvtale/datarail-library#4 |
 | `movies.visit` | /movies/ | not yet |
 | `events.visit` | /events/ | not yet |
 | `ghostsignal.visit` | /ghostsignal/ | not yet |

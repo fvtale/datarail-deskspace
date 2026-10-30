@@ -77,7 +77,7 @@
       "hint": "Browse the Library.",
       "source": "beacon",
       "where": "/library/",
-      "live": false
+      "live": true
     },
     {
       "id": "movies.visit",
